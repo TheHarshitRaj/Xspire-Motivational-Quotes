@@ -1,60 +1,34 @@
 import requests
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-import sys
+from kivymd.app import MDApp
+from kivy.lang import Builder
+from kivy.core.window import Window
+from kivy.properties import StringProperty
 
-def quotes(quote_label):
-    response=requests.get('https://zenquotes.io/api/random')
-    data=response.json()[0]
+Window.size = (600,500)     # Specifies a window size to be default when opened on desktop
 
-    quote=data['q'] + '\n-' + data['a']
+class XspireQuotes(MDApp):
+    quote=StringProperty('')        # Quote is defined as an empty string property
 
-    quote_label.setText(quote)
+    def build(self):
+        self.theme_cls.primary_palette='Indigo'     # Primary Palette (For Buttons, Text Fields, etc.)
+        self.theme_cls.theme_style='Dark'       # Theme (Can be Dark or Light)
+        screen = Builder.load_file('quotes.kv')     # Loading the .kv file
+        return screen
+    
+    def quotes(self):
 
+        ''' Requests quotes from zenquotes api and changes the value of quote variable '''
 
-def gui_window():
-    app=QApplication(sys.argv)
-    window=QMainWindow()
-    window.setWindowTitle('Xspire')
-    window.setGeometry(400,200,700,400)
-    window.setStyleSheet('background-color: #B6D094')
-    content=QLabel(window)
-    content.resize(800,100)
-    content.setWordWrap(True)
-    content.setText("\tWelcome to Xspire\nProviding just the motivation you need.\n")
-    content.move(175,25)
-    font=QFont()
-    font.setFamily('Times New Roman')
-    font.setPointSize(16)
-    font.setBold(True)
-    font.setUnderline(True)
-    content.setFont(font)
+        response=requests.get('https://zenquotes.io/api/random')
+        if response.status_code == 200:
+            data=response.json()[0]
+            self.quote = data['q'] + '\n\n-' + data['a'] + '\n'
+        elif response.status_code == 404:
+            self.quote = 'Error connecting to the server. Try again later.'
+        elif response.status_code == 429:
+            self.quote = 'Too many requests. Please try again after a while.' + '\n\n-' + 'Xspire' + '\n'
+        else:
+            self.quote = f"Unexpected status code: {response.status_code}. Please try again later."
 
-    quote_label = QLabel("", window)  # Attach it to the window
-    quote_label.setWordWrap(True)
-    quote_label.setFont(QFont("Arial", 14))
-    quote_label.setStyleSheet("""
-        border: 2px solid black;
-        padding: 10px;
-        background-color: #f9f9f9;
-        border-radius: 10px;
-    """)
-    quote_label.setGeometry(100, 150, 500, 100)  # Positioning
-
-    # Get Quote button
-    get_quote = QPushButton('Get New Quote', window)  # Attach it to the window
-    get_quote.setGeometry(300, 300, 100, 40)  # Set button position
-    get_quote.setStyleSheet('background-color: #BE8A60')
-    get_quote.clicked.connect(lambda: quotes(quote_label))  # Pass QLabel to function
-
-    copyright=QLabel(window)
-    copyright.setText('(c) Harshit Raj')
-    copyright.move(10,375)
-    window.show()
-
-    if __name__=='__main__':
-        app.exec()
-
-
-gui_window()
+if __name__=='__main__':
+    XspireQuotes().run()
