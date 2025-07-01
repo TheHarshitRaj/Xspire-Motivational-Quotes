@@ -1,0 +1,33 @@
+Screen:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 20
+        MDLabel:
+            text: 'Xspire Quotes'
+            font_style: 'H4'
+            halign: 'center'
+        Widget:
+        MDCard:
+            elevation: 1
+            size_hint: (0.6, None)
+            height: "150dp"
+            pos_hint: {'center_x':0.5,'center_y':0.5}
+            padding: "20dp"
+            md_bg_color: '#44CCFF'
+
+            MDLabel:
+                text: f'{app.quote}'
+                theme_text_color: "Custom"
+                text_color: "black"
+        
+        MDFillRoundFlatIconButton
+            text: "Generate"
+            icon: "lightbulb"
+            pos_hint: {'center_x':0.5}
+            on_release: app.quotes()
+
+        Widget:
+        MDLabel:
+            text: 'Made with Care'
+            font_style: 'Body2'
