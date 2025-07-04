@@ -3,31 +3,35 @@ Screen:
         orientation: 'vertical'
         padding: 20
         spacing: 20
+
         MDLabel:
-            text: 'Xspire Quotes'
-            font_style: 'H4'
-            halign: 'center'
-        Widget:
+            text: 'Xspire Quotes'    # Heading text
+            font_style: 'H4'    # Heading style
+            halign: 'center'    # Heading text alignment
+
+        Widget:    # Placeholder to align the card in right place
+
         MDCard:
-            elevation: 1
-            size_hint: (0.6, None)
-            height: "150dp"
-            pos_hint: {'center_x':0.5,'center_y':0.5}
-            padding: "20dp"
-            md_bg_color: '#44CCFF'
+            elevation: 1    # Elevation of the card from the screen
+            size_hint: (0.6, None)    # Width is 0.6 of window size
+            height: "150dp"    # Height is 150dp
+            pos_hint: {'center_x':0.5,'center_y':0.5}    # Aligns the card in the center
+            padding: "20dp"    # Padding applied to the widgets inside
+            md_bg_color: '#44CCFF'    # Background color of the card
 
             MDLabel:
-                text: f'{app.quote}'
+                text: f'{app.quote}'   # Takes the value of the variable 'quote' in app class
                 theme_text_color: "Custom"
-                text_color: "black"
+                text_color: "black"    # Text color set to 'Black'
         
-        MDFillRoundFlatIconButton
+        MDFillRoundFlatIconButton:    # A Round button with text and icon
             text: "Generate"
             icon: "lightbulb"
-            pos_hint: {'center_x':0.5}
-            on_release: app.quotes()
+            pos_hint: {'center_x':0.5}    # X-axis alignment: To center
+            on_release: app.quotes()    # Function quotes() in app class is called
 
-        Widget:
+        Widget:    # Placeholder to align the text in right place
+
         MDLabel:
             text: 'Made with Care'
             font_style: 'Body2'
